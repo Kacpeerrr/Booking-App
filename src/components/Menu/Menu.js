@@ -1,9 +1,14 @@
 import React from 'react'
+import style from './Menu.module.css'
 
 function Menu() {
     return (
-        <div>
-            <p>Menu</p>
+        <div className={`${style.menuContainer} container`}>
+            <ul className={style.menu}>
+                <li className={style.menuItem}>
+                    <a href="#section">Home</a>
+                </li>
+            </ul>
         </div>
     )
 }
