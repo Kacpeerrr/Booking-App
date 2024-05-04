@@ -1,15 +1,22 @@
 .menu {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 15px 0;
     text-align: left;
 }
 
 .menuItem {
     display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;;
+}
+
+.menuItem a {
+    color: #6c757d;
 }
 
 .menuContainer{
     border:1px solid #cdcdcd;
+    border-radius: 5px;
     margin: 10px 0;
 }
