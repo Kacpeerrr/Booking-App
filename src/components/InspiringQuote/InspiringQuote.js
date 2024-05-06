@@ -26,7 +26,6 @@ function InspiringQuote(props) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        //pobieranie
         setLoading(false)
     })
 

@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import moment from 'moment'
 
 const BestHotel = (props) => {
+    
     const [time, setTime] = useState('')
     const endTime = moment().add(23, 'minutes').add(5, 'seconds')
     const hotel = props.getHotel()

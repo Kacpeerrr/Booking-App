@@ -4,7 +4,6 @@ const Fragment = props => {
             {props.children}
         </div>
     )
-    
 }
 
 export default Fragment
