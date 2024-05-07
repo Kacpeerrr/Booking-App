@@ -11,7 +11,7 @@ function useStateStorage(key, defaultValue) {
 		setState(val)
 		window.localStorage.setItem(key, JSON.stringify(val))
 	}
-
+	
 	return [state, setValue]
 }
 

@@ -1,6 +1,5 @@
 import React from "react"
 const withMousePosition = (WrappedComponent) => {
-
     class Hoc extends React.Component {
         state = {
             x:0,

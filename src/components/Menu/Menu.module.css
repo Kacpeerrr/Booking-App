@@ -1,22 +1,27 @@
 .menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 15px 0;
-    text-align: left;
+	list-style-type: none;
+	margin: 0;
+	padding: 15px 15px;
+	text-align: left;
 }
 
 .menuItem {
-    display: inline-block;
-    margin-right: 10px;
-    margin-left: 10px;;
+	display: inline-block;
+	margin: 0px 6px;
 }
 
 .menuItem a {
-    color: #6c757d;
+	color: #6c757d;
+    text-decoration: none;
 }
 
-.menuContainer{
-    border:1px solid #cdcdcd;
-    border-radius: 5px;
-    margin: 10px 0;
+.menuItem a.menuItemActive {
+    text-decoration: underline;
+	margin: 0px 6px;
+}
+
+.menuContainer {
+	border: 1px solid #cdcdcd;
+	border-radius: 5px;
+	margin: 10px 0;
 }

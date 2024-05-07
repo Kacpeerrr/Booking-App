@@ -4,6 +4,7 @@ import hotelImg from '../../../assets/images/hotel.jpg'
 import ThemeContext from '../../../context/themeContext'
 import { useContext } from 'react'
 import useAuth from '../../../hooks/useAuth'
+import { Link } from 'react-router-dom'
 
 
 const propTypes = {
@@ -18,7 +19,6 @@ function Hotel(props) {
 	const [auth] = useAuth()
 
 	const clickHandler = e => {
-		e.preventDefault()
 		props.onOpen(props)
 	}
 	
@@ -41,12 +41,10 @@ function Hotel(props) {
 							</div>
 							<div className='col text-end'>
 								<h5>Ocena: {props.rating}</h5>
-								<a 
-								href='#section'
-								onClick={clickHandler} 
-								className={`btn btn-${theme.color} mt-2 px-4 float-end`}>
-								Pokaż
-								</a>
+								{/* Dodajemy link z routera z parametrem z props */}
+								<Link to={`/hotele/${props.id}`} className={`btn btn-${theme.color} mt-2 px-4 float-end`} onClick={clickHandler} >
+									Pokaż
+								</Link>	
 							</div>
 						</div>
 					</div>

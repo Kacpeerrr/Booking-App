@@ -1,5 +1,6 @@
 import style from './Menu.module.css'
 import useAuth from '../../hooks/useAuth.js'
+import { NavLink } from 'react-router-dom'
 
 function Menu() {
    
@@ -18,13 +19,27 @@ function Menu() {
         <div className={`${style.menuContainer}`}>
             <ul className={style.menu}>
                 <li className={style.menuItem}>
-                    <a href="#section">Home</a>
+                    <NavLink
+						to='/'
+                        className={({ isActive }) => (isActive ? style.menuItemActive : style.menuItem)}
+                        >
+						Home
+					</NavLink>
                 </li>
                     {auth
                     ? (
-                    <li className={style.menuItem}>
-                        <a href="#section" onClick={logout}>Wyloguj</a> 
-                    </li>
+                        <>
+                            <li className={style.menuItem}>
+                                <NavLink
+								to='/profil'
+								className={({ isActive }) => (isActive ? style.menuItemActive : style.menuItem)}>
+								Mój profil
+							    </NavLink>
+                            </li>
+                            <li className={style.menuItem}>
+                                <a href="#section" onClick={logout}>Wyloguj</a> 
+                            </li>
+                        </>
                     )
                     : (
                     <li className={style.menuItem}> 
