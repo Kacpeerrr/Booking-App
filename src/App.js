@@ -19,6 +19,8 @@ import NotFound from './pages/404/404'
 import Login from './pages/Auth/Login'
 import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute'
 import ErrorBoundary from './hoc/ErrorBoundary'
+import AddHotel from './pages/Profile/MyHotels/AddHotel/AddHotel'
+import Register from './pages/Auth/Register/Register'
 const Profile = lazy(() => import('./pages/Profile/Profile')) 
 
 function App() {
@@ -32,10 +34,21 @@ function App() {
 		</Header>
 	)
 
+
 	const content = (
 		<>
 			<ErrorBoundary>
 				<Routes>
+					<Route
+						path='/profil/hotele/dodaj'
+						element={
+							<AuthenticatedRoute isAuthenticated={state.isAuthenticated}>
+							<Suspense fallback={<p>Ładowanie...</p>}>
+							<AddHotel/>
+							</Suspense>
+							</AuthenticatedRoute>
+						}
+					/>
 					<Route 
 						path='/profil/*'
 						element={
@@ -54,17 +67,18 @@ function App() {
 						path='/wyszukaj/:term?'
 						element={<Search/>}
 					/>
-
 					<Route
 						path='/zaloguj/'
 						element={<Login/>}
 					/>
-					
+					<Route
+						path='/rejestracja/'
+						element={<Register/>}
+					/>
 					<Route
 						path='/'
 						element={<Home/>}
 					/>
-
 					<Route
 						path='*'
 						element={<NotFound/>}
@@ -78,6 +92,7 @@ function App() {
 	const footer = <Footer />
 
 	return (
+
 		<Router>
 			<AuthContext.Provider
 				value={{

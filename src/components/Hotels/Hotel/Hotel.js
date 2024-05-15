@@ -41,7 +41,6 @@ function Hotel(props) {
 							</div>
 							<div className='col text-end'>
 								<h5>Ocena: {props.rating}</h5>
-								{/* Dodajemy link z routera z parametrem z props */}
 								<Link to={`/hotele/${props.id}`} className={`btn btn-${theme.color} mt-2 px-4 float-end`} onClick={clickHandler} >
 									Pokaż
 								</Link>	

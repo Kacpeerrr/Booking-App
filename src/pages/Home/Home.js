@@ -28,9 +28,7 @@ const backendHotels = [
 export default function Home(props) {
     const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null)
 
-    //ustawiamy stan loading
     const [loading, setLoading] = useState(true)
-    //ustawiamy stan hotele
     const [hotels, setHotels] = useState([])
 
     
