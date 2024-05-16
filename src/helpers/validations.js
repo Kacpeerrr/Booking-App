@@ -28,6 +28,7 @@ export function validate(rules = [], value) {
 		} else {
 			const errorMessage = availableRules[rule](value)
 			if (errorMessage) {
+				//zwracamy błąd
 				return errorMessage
 			}
 		}

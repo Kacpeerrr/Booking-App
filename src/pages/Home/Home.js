@@ -1,38 +1,19 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import LastHotel from '../../components/Hotels/LastHotel/LastHotel'
 import useStateStorage from '../../hooks/useStateStorage'
 import useWebsiteTitle from '../../hooks/useWebsiteTitle'
 import BestHotel from '../../components/Hotels/BestHotel/BestHotel'
 import Hotels from '../../components/Hotels/Hotels'
 import LoadingIcon from '../../components/UI/LoadingIcon/LoadingIcon'
-
-const backendHotels = [
-	{
-		id: 1,
-		name: 'Pod akacjami',
-		city: 'Warszawa',
-		rating: 8.3,
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet dolor eu nisi pretium auctor.',
-		image: '',
-	},
-	{
-		id: 2,
-		name: 'Dębowy',
-		city: 'Lublin',
-		rating: 8.8,
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet dolor eu nisi pretium auctor.',
-		image: '',
-	},
-]
+import axios from '../../axios'
+import {objectToArrayWithId} from '../../helpers/objects'
 
 export default function Home(props) {
-    const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null)
+	useWebsiteTitle('Strona główna')
 
+    const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null)
     const [loading, setLoading] = useState(true)
     const [hotels, setHotels] = useState([])
-
-    
-	useWebsiteTitle('Strona główna')
 
 	const getBestHotel = () => {
 		if (hotels.length < 2) {
@@ -42,19 +23,22 @@ export default function Home(props) {
 		}
 	}
 
-	const openHotel = hotel => {
-		setLastHotel(hotel)
-	}
-
-	const removeLastHotel = () => {
-		setLastHotel(null)
+	const openHotel = (hotel) => setLastHotel(hotel)
+	const removeLastHotel = () => setLastHotel(null)
+	const fetchHotels = async () => {
+		try {
+			const res = await axios.get('/hotels.json')
+			const newHotels = objectToArrayWithId(res.data)
+				.filter(hotel => hotel.status == 1)
+			setHotels(newHotels)
+		} catch (ex) {
+			console.log(ex.response)
+		}
+		setLoading(false)
 	}
 
 	useEffect(() => {
-		setTimeout(() => {
-            setHotels(backendHotels)
-			setLoading(false)
-		}, 1000)
+		fetchHotels()
 	}, [])
 
 	return loading ? <LoadingIcon /> : (

@@ -1,7 +1,8 @@
-import { useState } from "react"
-import useAuth from "../../hooks/useAuth"
-import { useNavigate } from "react-router-dom"
-import LoadingButton from "../../components/UI/LoadingButton/LoadingButton"
+import { useState } from 'react'
+import useAuth from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
+import LoadingButton from '../../components/UI/LoadingButton/LoadingButton'
+import axios from '../../axios-auth'
 
 export default function Login(props) {
 	const [auth, setAuth] = useAuth()
@@ -10,32 +11,41 @@ export default function Login(props) {
 	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [valid, setValid] = useState(null)
+	const [error, setError] = useState('')
 
-	const submit = (e) => {
+	const submit = async e => {
 		e.preventDefault()
 		setLoading(true)
 
-		setTimeout(() => {
-			if(true) {
-				setAuth(true)
-				history('/')
-			} else {
-				setValid(false)
-				setPassword('')
-			}
-
+		try {
+			const res = await axios.post('/accounts:signInWithPassword',
+			{
+				email,
+				password,
+				returnSecureToken: true,
+			})
+			setAuth({
+				email: res.data.email,
+				token: res.data.idToken,
+				userId: res.data.localId
+			})
+			history('/')
+		} catch (ex) {
+			setError(ex.response.data.error.message)
+			console.log(ex.response)
 			setLoading(false)
-			
-		},500)
+		}
 	}
 
+	if (auth) {
+		history('/')
+	}
 
 	return (
 		<div>
 			<h2>Logowanie</h2>
-			{valid === false ? (
-				<div className="alert alert-danger">Niepoprawne dane logowania</div>
-			) :null}
+
+			{valid === false ? <div className='alert alert-danger'>Niepoprawne dane logowania</div> : null}
 			<form onSubmit={submit}>
 				<div className='form-group'>
 					<label className='mt-2'>Email</label>
@@ -55,6 +65,11 @@ export default function Login(props) {
 						className='form-control'
 					/>
 				</div>
+
+				{error ? (
+					<div className='alert alert-danger mt-3'>{error}</div>
+				) : null}
+
 				<LoadingButton loading={loading}>Zaloguj</LoadingButton>
 			</form>
 		</div>

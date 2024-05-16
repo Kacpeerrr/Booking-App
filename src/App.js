@@ -1,11 +1,11 @@
-import { useReducer, lazy, Suspense } from 'react'
+import { useReducer, lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css'
-import Header from './components/Header/Header'
-import Menu from './components/Menu/Menu'
+import Header from './components/Layout/Header/Header'
+import Menu from './components/Layout/Menu/Menu'
 import Searchbar from './components/UI/Searchbar/Searchbar'
 import Layout from './components/Layout/Layout'
-import Footer from './components/Footer/Footer'
+import Footer from './components/Layout/Footer/Footer'
 import ThemeButton from './components/UI/ThemeButton/ThemeButton'
 import ThemeContext from './context/themeContext'
 import AuthContext from './context/authContext'
@@ -20,6 +20,7 @@ import Login from './pages/Auth/Login'
 import AuthenticatedRoute from './components/AuthenticatedRoute/AuthenticatedRoute'
 import ErrorBoundary from './hoc/ErrorBoundary'
 import AddHotel from './pages/Profile/MyHotels/AddHotel/AddHotel'
+import EditHotel from './pages/Profile/MyHotels/EditHotel/EditHotel'
 import Register from './pages/Auth/Register/Register'
 const Profile = lazy(() => import('./pages/Profile/Profile')) 
 
@@ -40,9 +41,19 @@ function App() {
 			<ErrorBoundary>
 				<Routes>
 					<Route
+						path='/profil/hotele/edytuj/:id'
+						element={
+							<AuthenticatedRoute user={state.user}>
+							<Suspense fallback={<p>Ładowanie...</p>}>
+							<EditHotel/>
+							</Suspense>
+							</AuthenticatedRoute>
+						}
+					/>
+					<Route
 						path='/profil/hotele/dodaj'
 						element={
-							<AuthenticatedRoute isAuthenticated={state.isAuthenticated}>
+							<AuthenticatedRoute user={state.user}>
 							<Suspense fallback={<p>Ładowanie...</p>}>
 							<AddHotel/>
 							</Suspense>
@@ -52,7 +63,7 @@ function App() {
 					<Route 
 						path='/profil/*'
 						element={
-						<AuthenticatedRoute isAuthenticated={state.isAuthenticated}>
+						<AuthenticatedRoute user={state.user}>
 						<Suspense fallback={<p>Ładowanie...</p>}>
 						<Profile/>
 						</Suspense>
@@ -96,8 +107,8 @@ function App() {
 		<Router>
 			<AuthContext.Provider
 				value={{
-					isAuthenticated: state.isAuthenticated,
-					login: () => dispatch({ type: 'login' }),
+					user: state.user,
+					login: (user) => dispatch({ type: 'login', user }),
 					logout: () => dispatch({ type: 'logout' }),
 				}}>
 				<ThemeContext.Provider
