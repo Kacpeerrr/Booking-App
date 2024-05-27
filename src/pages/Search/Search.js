@@ -10,14 +10,16 @@ export default function Search(props) {
 	const search = async () => {
 		try {
 			const res = await axios.get('/hotels.json')
-			const newHotels = objectToArrayWithId(res.data)
-				.filter(hotel => hotel.name.toLowerCase().includes(term.toLowerCase()));
+			const allHotels = objectToArrayWithId(res.data)
+			const newHotels = term
+				? allHotels.filter(hotel => hotel.name.toLowerCase().includes(term.toLowerCase()))
+				: allHotels
 			setHotels(newHotels)
 		} catch (ex) {
 			console.log(ex.response)
 		}
 	}
-
+	
 	useEffect(() => {
 		search()
 	}, [term])
@@ -29,4 +31,3 @@ export default function Search(props) {
 		</div>
 	)
 }
-

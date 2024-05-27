@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import LoadingButton from '../../components/UI/LoadingButton/LoadingButton'
@@ -6,7 +6,7 @@ import axios from '../../axios-auth'
 
 export default function Login(props) {
 	const [auth, setAuth] = useAuth()
-	const history = useNavigate()
+	const navigate = useNavigate()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
@@ -18,8 +18,7 @@ export default function Login(props) {
 		setLoading(true)
 
 		try {
-			const res = await axios.post('/accounts:signInWithPassword',
-			{
+			const res = await axios.post('/accounts:signInWithPassword', {
 				email,
 				password,
 				returnSecureToken: true,
@@ -27,9 +26,9 @@ export default function Login(props) {
 			setAuth({
 				email: res.data.email,
 				token: res.data.idToken,
-				userId: res.data.localId
+				userId: res.data.localId,
 			})
-			history('/')
+			navigate('/')
 		} catch (ex) {
 			setError(ex.response.data.error.message)
 			console.log(ex.response)
@@ -37,9 +36,11 @@ export default function Login(props) {
 		}
 	}
 
-	if (auth) {
-		history('/')
-	}
+	useEffect(() => {
+		if (auth) {
+			navigate('/')
+		}
+	}, [auth, navigate])
 
 	return (
 		<div>
@@ -66,9 +67,7 @@ export default function Login(props) {
 					/>
 				</div>
 
-				{error ? (
-					<div className='alert alert-danger mt-3'>{error}</div>
-				) : null}
+				{error ? <div className='alert alert-danger mt-3'>{error}</div> : null}
 
 				<LoadingButton loading={loading}>Zaloguj</LoadingButton>
 			</form>

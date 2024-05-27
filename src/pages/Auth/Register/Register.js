@@ -71,10 +71,11 @@ export default function Register(props) {
 		})
 	}
 	
-	if (auth) {
-		navigate('/')
-	}
-	
+	useEffect(() => {
+		if (auth) {
+			navigate('/')
+		}
+	}, [auth, navigate])
 
 	return (
 		<div className='card'>
